@@ -30,7 +30,7 @@ export const createUser = async (userData) => {
  * @returns {Promise<object>} Uma promise que resolve com os dados atualizados.
  */
 export const updateUser = async (userId, updatedData) => {
-  const response = await api.put(`/users/${userId}`, updatedData);
+  const response = await api.patch(`/users/${userId}`, updatedData);
   return response.data;
 };
 

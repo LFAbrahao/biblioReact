@@ -1,5 +1,3 @@
-// src/pages/BookDetails.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Image, Button, Alert } from 'react-bootstrap';
@@ -7,7 +5,7 @@ import * as bookService from '../api/bookService';
 import Spinner from '../components/Spinner';
 
 function BookDetails() {
-  const { id } = useParams(); // Pega o ID do livro da URL
+  const { id } = useParams();
   const [book, setBook] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,7 +25,7 @@ function BookDetails() {
     };
 
     fetchBook();
-  }, [id]); // Re-executa se o ID na URL mudar
+  }, [id]);
 
   if (isLoading) {
     return <Spinner />;
@@ -45,16 +43,23 @@ function BookDetails() {
     <Container>
       <Row>
         <Col md={4}>
-          <Image src={book.coverImage || 'https://via.placeholder.com/300x400'} fluid rounded />
+          <Image src={book.imageUrl || 'https://via.placeholder.com/300x400'} fluid rounded />
         </Col>
         <Col md={8}>
           <h1>{book.title}</h1>
           <h4 className="text-muted">{book.author}</h4>
           <hr />
           <h5>Descrição</h5>
-          <p>{book.description}</p>
-          <p><strong>Páginas:</strong> {book.pages || 'N/A'}</p>
-          <p><strong>Categoria:</strong> {book.category || 'N/A'}</p>
+          <p>{book.description || 'Nenhuma descrição fornecida.'}</p>
+          
+          {/* 1. LINHA DE PÁGINAS REMOVIDA */}
+
+          {/* 2. CORREÇÃO: Alterado 'Categoria' para 'Gênero' e 'book.category' para 'book.genre' */}
+          <p><strong>Gênero:</strong> {book.genre || 'Não especificado'}</p>
+
+          {/* 3. BÔNUS: Adicionando a exibição do estoque, que já temos nos dados */}
+          <p><strong>Unidades em Estoque:</strong> {book.stock}</p>
+
           <hr />
           <Button as={Link} to="/" variant="secondary">Voltar ao Catálogo</Button>
         </Col>

@@ -30,11 +30,7 @@ export const getBookById = async (bookId) => {
 export const createBook = async (bookData) => {
   // Usar 'Content-Type': 'multipart/form-data' é importante para uploads de arquivos.
   // O Axios geralmente faz isso automaticamente se você passar um objeto FormData.
-  const response = await api.post('/books', bookData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const response = await api.post('/books', bookData);
   return response.data;
 };
 
@@ -45,7 +41,7 @@ export const createBook = async (bookData) => {
  * @returns {Promise<object>} Uma promise que resolve com os dados do livro atualizado.
  */
 export const updateBook = async (bookId, updatedData) => {
-  const response = await api.put(`/books/${bookId}`, updatedData);
+  const response = await api.patch(`/books/${bookId}`, updatedData);
   return response.data;
 };
 

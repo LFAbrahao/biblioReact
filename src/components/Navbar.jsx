@@ -3,15 +3,21 @@
 import React from 'react';
 import { Navbar as BootstrapNavbar, Container, Nav, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../api/authService'; // Importe a função de logout
+// import { logout } from '../api/authService'; // Podemos comentar isso por enquanto
 
 function Navbar() {
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem('authToken'); // Verifica se há um token no localStorage
+  
+  // AQUI ESTÁ A MUDANÇA:
+  // Comente a verificação real e force o valor para 'true'
+  // const isLoggedIn = !!localStorage.getItem('authToken'); 
+  const isLoggedIn = true; // << FORÇADO PARA TESTES
 
   const handleLogout = () => {
-    logout(); // Limpa o token
-    navigate('/login'); // Redireciona para a página de login
+    // A função de logout pode ser desativada ou mantida, mas não terá muito efeito agora
+    // logout(); 
+    localStorage.clear(); // Limpa tudo para simular um logout
+    navigate('/login');
   };
 
   return (
@@ -22,20 +28,21 @@ function Navbar() {
         <BootstrapNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Início</Nav.Link>
+            
+            {/* Como isLoggedIn agora é sempre true, estes links sempre aparecerão */}
             {isLoggedIn && (
               <>
-                {/* Links específicos para usuários logados */}
                 <Nav.Link as={Link} to="/gerenciar-livros">Gerenciar Livros</Nav.Link>
-                <Nav.Link as={Link} to="/gerenciar-usuarios">Gerenciar Usuários</Nav.Link>
-                <Nav.Link as={Link} to="/admin/dashboard">Admin</Nav.Link> {/* Exemplo de link específico */}
-                <Nav.Link as={Link} to="/bibliotecario/dashboard">Bibliotecário</Nav.Link> {/* Exemplo */}
+                <Nav.Link as={Link} to="/admin/gerenciar-usuarios">Gerenciar Usuários</Nav.Link>
+                <Nav.Link as={Link} to="/admin/dashboard">Admin</Nav.Link>
+                <Nav.Link as={Link} to="/bibliotecario/dashboard">Bibliotecário</Nav.Link>
               </>
             )}
           </Nav>
           <Nav>
             {isLoggedIn ? (
               <Button variant="outline-danger" onClick={handleLogout} className="ms-lg-2">
-                Sair
+                Sair (Teste)
               </Button>
             ) : (
               <Nav.Link as={Link} to="/login">Entrar</Nav.Link>

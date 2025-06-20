@@ -1,11 +1,16 @@
 // src/components/ProtectedRoute.jsx
 
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+// A importação do Navigate não é mais necessária temporariamente
+// import { Navigate } from 'react-router-dom';
 
 function ProtectedRoute({ children, roles }) {
+  // =================================================================
+  // CÓDIGO ORIGINAL (COMENTADO PARA NÃO PERDER)
+  // =================================================================
+  /*
   const isAuthenticated = !!localStorage.getItem('authToken');
-  const userRole = JSON.parse(localStorage.getItem('user'))?.role; // Supondo que os dados do usuário (incluindo a role) são salvos ao logar
+  const userRole = JSON.parse(localStorage.getItem('user'))?.role;
 
   if (!isAuthenticated) {
     // Se não estiver autenticado, redireciona para a página de login
@@ -13,13 +18,14 @@ function ProtectedRoute({ children, roles }) {
   }
 
   if (roles && !roles.includes(userRole)) {
-    // Se a rota exige certas roles e o usuário não as possui, pode redirecionar para uma página de "Não Autorizado"
+    // Se a rota exige certas roles e o usuário não as possui, nega o acesso
     return <div>Acesso negado. Você não tem permissão para acessar esta página.</div>;
-    // Ou você pode redirecionar para outra página, como a Home:
-    // return <Navigate to="/" />;
   }
+  */
+  // =================================================================
 
-  // Se estiver autenticado e a role for permitida (se especificada), renderiza o componente filho
+  // MÁGICA PARA DESABILITAR A AUTENTICAÇÃO:
+  // Simplesmente renderiza qualquer componente filho que a rota protegida deveria mostrar.
   return children;
 }
 
