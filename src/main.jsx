@@ -1,20 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import App from './App.jsx'
+// src/main.jsx
 
-// Importação do Bootstrap
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
 
-// Contextos globais (auth, role, etc)
-import { AuthProvider } from './context/AuthContext.jsx'
+// 1. Importe o CSS do Bootstrap. Essencial para que os componentes funcionem.
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// 2. Importe seus estilos personalizados, se tiver.
+import './assets/App.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </BrowserRouter>
+    <App />
   </React.StrictMode>
-)
+);
