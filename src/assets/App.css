@@ -1,0 +1,119 @@
+/* src/assets/App.css */
+
+/* 1. VARIÁVEIS GLOBAIS (ROOT)
+  ------------------------------------
+  Definir variáveis para cores e sombras facilita a manutenção e a customização do tema.
+*/
+:root {
+  --primary-color: #0d6efd; /* Azul padrão do Bootstrap */
+  --secondary-color: #6c757d; /* Cinza padrão do Bootstrap */
+  --bg-light: #f8f9fa;       /* Cor de fundo clara */
+  --text-dark: #212529;      /* Cor de texto escura */
+  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --card-hover-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* 2. ESTILOS GLOBAIS E TIPOGRAFIA
+  ------------------------------------
+  Estilos base para o corpo da página, fontes e títulos.
+*/
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+}
+
+/* Garante que o layout ocupe toda a altura da tela, útil para centralizar conteúdo */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Faz o conteúdo principal crescer para ocupar o espaço disponível */
+.container, .container-fluid {
+  flex-grow: 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600; /* Títulos um pouco mais fortes */
+}
+
+/* 3. ESTILOS DE COMPONENTES ESPECÍFICOS
+  ------------------------------------
+  Customizações para os componentes que criamos.
+*/
+
+/* --- Navbar Styles --- */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* --- BookCard Styles --- */
+.card {
+  border: none; /* Remove a borda padrão do Bootstrap */
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animação suave */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Efeito de "levantar" o card */
+  box-shadow: var(--card-hover-shadow);
+}
+
+/* Garante que o link dentro do card não tenha o estilo padrão (sublinhado azul) */
+.card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-img-top {
+  border-bottom: 1px solid #eee; /* Linha sutil separando a imagem do corpo */
+}
+
+/* --- StatCard (Dashboard) Styles --- */
+.stat-card .card-body {
+  padding: 1.5rem;
+}
+
+/* --- Tabela (Manage Pages) Styles --- */
+.table {
+  box-shadow: var(--card-shadow);
+}
+
+.table th {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+/* Alinha verticalmente o conteúdo das células da tabela, fica melhor com imagens e botões */
+.table td, .table th {
+  vertical-align: middle;
+}
+
+/* --- Estilos para Badges de Permissão --- */
+/* Isso torna os badges um pouco mais legíveis */
+.table .badge {
+  padding: 0.5em 0.75em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* --- Formulário de Login Styles --- */
+.login-card .card-body {
+  padding: 2.5rem; /* Mais espaço interno no card de login */
+}
+
+/* 4. CLASSES UTILITÁRIAS
+  ------------------------------------
+  Pequenas classes que podem ser úteis em vários lugares.
+*/
+.cursor-pointer {
+  cursor: pointer;
+}
