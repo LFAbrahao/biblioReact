@@ -11,6 +11,7 @@ function Navbar() {
   // AQUI ESTÁ A MUDANÇA:
   // Comente a verificação real e force o valor para 'true'
   // const isLoggedIn = !!localStorage.getItem('authToken'); 
+  
   const isLoggedIn = true; // << FORÇADO PARA TESTES
 
   const handleLogout = () => {
@@ -20,7 +21,7 @@ function Navbar() {
     navigate('/login');
   };
 
-  return (
+ return (
     <BootstrapNavbar bg="light" expand="lg" className="mb-3">
       <Container>
         <BootstrapNavbar.Brand as={Link} to="/">Minha Biblioteca</BootstrapNavbar.Brand>
@@ -29,25 +30,18 @@ function Navbar() {
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Início</Nav.Link>
             
-            {/* Como isLoggedIn agora é sempre true, estes links sempre aparecerão */}
             {isLoggedIn && (
               <>
                 <Nav.Link as={Link} to="/gerenciar-livros">Gerenciar Livros</Nav.Link>
+                {/* ADICIONE O NOVO LINK ABAIXO */}
+                <Nav.Link as={Link} to="/gerenciar-emprestimos">Gerenciar Empréstimos</Nav.Link>
                 <Nav.Link as={Link} to="/admin/gerenciar-usuarios">Gerenciar Usuários</Nav.Link>
                 <Nav.Link as={Link} to="/admin/dashboard">Admin</Nav.Link>
                 <Nav.Link as={Link} to="/bibliotecario/dashboard">Bibliotecário</Nav.Link>
               </>
             )}
           </Nav>
-          <Nav>
-            {isLoggedIn ? (
-              <Button variant="outline-danger" onClick={handleLogout} className="ms-lg-2">
-                Sair (Teste)
-              </Button>
-            ) : (
-              <Nav.Link as={Link} to="/login">Entrar</Nav.Link>
-            )}
-          </Nav>
+          {/* ... restante do componente ... */}
         </BootstrapNavbar.Collapse>
       </Container>
     </BootstrapNavbar>

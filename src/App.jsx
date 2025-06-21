@@ -8,23 +8,19 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Importando as páginas
-import Home from './pages/Home';
+import Home from './pages/Home'; // <-- ADICIONE OU GARANTA QUE ESTA LINHA EXISTA
 import Login from './pages/Login';
 import BookDetails from './pages/BookDetails';
 import AdminDashboard from './pages/AdminDashboard';
 import LibrarianDashboard from './pages/LibrarianDashboard';
 import ManageBooks from './pages/ManageBooks';
 import ManageUsers from './pages/ManageUsers';
+import ManageLoans from './pages/ManageLoans';
 import NotFound from './pages/NotFound';
-
-// Supondo que você tenha um AuthProvider para gerenciar o estado do usuário.
-// Se ainda não tiver, pode começar sem ele e adicionar depois.
-// import { AuthProvider } from './context/AuthContext';
 
 
 function App() {
   return (
-    // <AuthProvider>  // <-- Você envolveria tudo com seu Contexto de Autenticação aqui
       <BrowserRouter>
         {/* A Navbar fica fora do <Routes> para aparecer em todas as páginas */}
         <Navbar />
@@ -35,7 +31,8 @@ function App() {
             {/* ======================= */}
             {/* ROTAS PÚBLICAS     */}
             {/* ======================= */}
-            <Route path="/" element={<Home />} />
+            {/* A linha abaixo (próximo da linha 32) é a que causa o erro se o import estiver faltando */}
+            <Route path="/" element={<Home />} /> 
             <Route path="/login" element={<Login />} />
             <Route path="/livro/:id" element={<BookDetails />} />
 
@@ -82,14 +79,20 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+             <Route 
+              path="/gerenciar-emprestimos" 
+              element={
+                <ProtectedRoute roles={['admin', 'librarian']}>
+                  <ManageLoans />
+                </ProtectedRoute>
+              } 
+            />
 
             {/* Rota para páginas não encontradas (deve ser a última) */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>
-        {/* Você poderia adicionar um <Footer /> aqui também */}
       </BrowserRouter>
-    // </AuthProvider>
   );
 }
 
