@@ -5,32 +5,16 @@ import AddEditBookModal from '../components/AddEditBookModal';
 import placeholderImage from '../assets/react.svg'; // Usando o placeholder local
 
 function ManageBooks() {
-  // --- ESTADOS DO COMPONENTE ---
-  
-  // Armazena a lista de livros vinda da API
   const [books, setBooks] = useState([]);
-  
-  // Controla a exibição do spinner de carregamento
   const [isLoading, setIsLoading] = useState(true);
-  
-  // Armazena mensagens de erro, se houver
   const [error, setError] = useState(null);
-  
-  // Controla se o modal está visível ou não
   const [showModal, setShowModal] = useState(false);
-  
-  // Guarda os dados do livro que está sendo editado. Se for 'null', significa que estamos adicionando um novo livro.
   const [editingBook, setEditingBook] = useState(null); 
 
-
-  // --- EFEITOS E CARREGAMENTO DE DADOS ---
-  
-  // useEffect para buscar os livros assim que o componente é montado
   useEffect(() => {
     fetchBooks();
   }, []);
   
-  // Função para buscar os livros da API e atualizar o estado
   const fetchBooks = async () => {
     try {
       setIsLoading(true);
@@ -45,15 +29,10 @@ function ManageBooks() {
     }
   };
 
-
-  // --- FUNÇÕES DE MANIPULAÇÃO DE EVENTOS (HANDLERS) ---
-  
-  // Lida com a exclusão de um livro
   const handleDelete = async (bookId) => {
     if (window.confirm('Tem certeza que deseja excluir este livro?')) {
       try {
         await bookService.deleteBook(bookId);
-        // Atualiza a lista de livros no frontend sem precisar buscar tudo de novo
         setBooks(books.filter(book => book.id !== bookId));
       } catch (err) {
         alert('Falha ao excluir o livro.');
@@ -61,45 +40,36 @@ function ManageBooks() {
     }
   };
 
-  // Fecha o modal e reseta o estado de edição
   const handleCloseModal = () => {
     setShowModal(false);
     setEditingBook(null);
   };
 
-  // Abre o modal em modo "Adicionar" (sem dados iniciais)
   const handleShowAddModal = () => {
     setEditingBook(null);
     setShowModal(true);
   };
   
-  // Abre o modal em modo "Editar", passando os dados do livro selecionado
   const handleShowEditModal = (book) => {
     setEditingBook(book);
     setShowModal(true);
   };
 
-  // Lida com o salvamento (criação ou atualização) de um livro
   const handleSaveBook = async (bookData) => {
     try {
-      // Se 'editingBook' tiver dados, atualizamos o livro existente
       if (editingBook) {
         console.log(`1. TENTANDO ATUALIZAR: ID=${editingBook.id}, com os seguintes dados:`, bookData);
         await bookService.updateBook(editingBook.id, bookData);
       } else {
-        // Se 'editingBook' for nulo, criamos um novo livro
         await bookService.createBook(bookData);
       }
-      handleCloseModal(); // Fecha o modal após salvar
-      fetchBooks(); // Recarrega a lista para exibir as alterações
+      handleCloseModal();
+      fetchBooks();
     } catch (err) {
         alert('Falha ao salvar o livro. Verifique o console para mais detalhes.');
         console.error(err);
     }
   };
-
-
-  // --- RENDERIZAÇÃO DO COMPONENTE ---
 
   if (isLoading) return <Spinner />;
   if (error) return <Alert variant="danger">{error}</Alert>;
@@ -117,6 +87,8 @@ function ManageBooks() {
             <th>Capa</th>
             <th>Título</th>
             <th>Autor</th>
+            {/* 1. CABEÇALHO DA NOVA COLUNA */}
+            <th>Estoque</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -132,6 +104,8 @@ function ManageBooks() {
               </td>
               <td>{book.title}</td>
               <td>{book.author}</td>
+              {/* 2. CÉLULA COM O DADO DO ESTOQUE */}
+              <td>{book.stock}</td>
               <td>
                 <Button 
                   variant="info" 
