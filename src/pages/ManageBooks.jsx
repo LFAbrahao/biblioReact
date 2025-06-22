@@ -3,6 +3,8 @@ import { Table, Button, Spinner, Alert } from 'react-bootstrap';
 import * as bookService from '../api/bookService';
 import AddEditBookModal from '../components/AddEditBookModal';
 import placeholderImage from '../assets/react.svg'; // Usando o placeholder local
+import { Link } from 'react-router-dom';
+
 
 function ManageBooks() {
   const [books, setBooks] = useState([]);
@@ -102,7 +104,12 @@ function ManageBooks() {
                   style={{ width: '50px', height: 'auto' }} 
                 />
               </td>
-              <td>{book.title}</td>
+              <td>
+               <Link to={`/livro/${book.id}`} style={{ textDecoration: 'none' }}>
+                {book.title}
+               </Link>
+              </td>
+
               <td>{book.author}</td>
               {/* 2. CÉLULA COM O DADO DO ESTOQUE */}
               <td>{book.stock}</td>
