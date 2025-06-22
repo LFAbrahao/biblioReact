@@ -8,7 +8,7 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Importando as páginas
-import Home from './pages/Home'; // <-- ADICIONE OU GARANTA QUE ESTA LINHA EXISTA
+import Home from './pages/Home';
 import Login from './pages/Login';
 import BookDetails from './pages/BookDetails';
 import AdminDashboard from './pages/AdminDashboard';
@@ -18,81 +18,94 @@ import ManageUsers from './pages/ManageUsers';
 import ManageLoans from './pages/ManageLoans';
 import NotFound from './pages/NotFound';
 
-
 function App() {
   return (
-      <BrowserRouter>
-        {/* A Navbar fica fora do <Routes> para aparecer em todas as páginas */}
-        <Navbar />
+    <>
+      {/* A Navbar fica fora do <Routes> para aparecer em todas as páginas */}
+      <Navbar />
 
-        {/* O Container do React Bootstrap ajuda a centralizar e alinhar o conteúdo */}
-        <Container className="mt-4 mb-4">
-          <Routes>
-            {/* ======================= */}
-            {/* ROTAS PÚBLICAS     */}
-            {/* ======================= */}
-            {/* A linha abaixo (próximo da linha 32) é a que causa o erro se o import estiver faltando */}
-            <Route path="/" element={<Home />} /> 
-            <Route path="/login" element={<Login />} />
-            <Route path="/livro/:id" element={<BookDetails />} />
+      {/* O Container do React Bootstrap ajuda a centralizar e alinhar o conteúdo */}
+      <Container className="mt-4 mb-4">
+        <Routes>
+          {/* ======================= */}
+          {/* ROTAS PÚBLICAS          */}
+          {/* ======================= */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/livro/:id" element={<BookDetails />} />
 
-            {/* ======================= */}
-            {/* ROTAS PROTEGIDAS - ADMIN */}
-            {/* ======================= */}
-            <Route 
-              path="/admin/dashboard" 
-              element={
-                <ProtectedRoute roles={['admin']}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/gerenciar-usuarios" 
-              element={
-                <ProtectedRoute roles={['admin']}>
-                  <ManageUsers />
-                </ProtectedRoute>
-              } 
-            />
+          {/* =================================================================== */}
+          {/* ALTERAÇÃO PRINCIPAL: A ROTA INICIAL AGORA É PROTEGIDA               */}
+          {/* =================================================================== */}
+          {/* Qualquer usuário logado (admin, librarian, ou user) poderá ver.   */}
+          {/* Se não estiver logado, será redirecionado para /login.            */}
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            } 
+          />
+          {/* =================================================================== */}
 
-            {/* =========================== */}
-            {/* ROTAS PROTEGIDAS - BIBLIOTECÁRIO */}
-            {/* =========================== */}
-            <Route 
-              path="/bibliotecario/dashboard" 
-              element={
-                <ProtectedRoute roles={['librarian']}>
-                  <LibrarianDashboard />
-                </ProtectedRoute>
-              } 
-            />
 
-            {/* ================================================= */}
-            {/* ROTA COMPARTILHADA (Admin E Bibliotecário) */}
-            {/* ================================================= */}
-            <Route 
-              path="/gerenciar-livros" 
-              element={
-                <ProtectedRoute roles={['admin', 'librarian']}>
-                  <ManageBooks />
-                </ProtectedRoute>
-              } 
-            />
-             <Route 
-              path="/gerenciar-emprestimos" 
-              element={
-                <ProtectedRoute roles={['admin', 'librarian']}>
-                  <ManageLoans />
-                </ProtectedRoute>
-              } 
-            />
+          {/* ======================= */}
+          {/* ROTAS PROTEGIDAS - ADMIN */}
+          {/* ======================= */}
+          <Route 
+            path="/admin/dashboard" 
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/gerenciar-usuarios" 
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <ManageUsers />
+              </ProtectedRoute>
+            } 
+          />
 
-            {/* Rota para páginas não encontradas (deve ser a última) */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Container>
-      </BrowserRouter>
+          {/* =========================== */}
+          {/* ROTAS PROTEGIDAS - BIBLIOTECÁRIO */}
+          {/* =========================== */}
+          <Route 
+            path="/bibliotecario/dashboard" 
+            element={
+              <ProtectedRoute roles={['librarian']}>
+                <LibrarianDashboard />
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* ================================================= */}
+          {/* ROTA COMPARTILHADA (Admin E Bibliotecário)      */}
+          {/* ================================================= */}
+          <Route 
+            path="/gerenciar-livros" 
+            element={
+              <ProtectedRoute roles={['admin', 'librarian']}>
+                <ManageBooks />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/gerenciar-emprestimos" 
+            element={
+              <ProtectedRoute roles={['admin', 'librarian']}>
+                <ManageLoans />
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Rota para páginas não encontradas (deve ser a última) */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Container>
+    </>
   );
 }
 

@@ -3,14 +3,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
-import * as authService from '../api/authService';
+import { useAuth } from '../contexts/AuthContext'; // 1. IMPORTE O HOOK useAuth
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
+  const { login } = useAuth(); // 2. PEGUE A FUNÇÃO 'login' DO NOSSO CONTEXTO
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,21 +20,24 @@ function Login() {
     setError(null);
 
     try {
-      const { user } = await authService.login({ email, password });
+      // 3. CHAME A FUNÇÃO 'login' DO CONTEXTO
+      // Ela vai cuidar de chamar a API, salvar no localStorage e ATUALIZAR O ESTADO GLOBAL
+      const loggedInUser = await login({ 
+        email: email.trim(), 
+        password: password.trim() 
+      });
       
-      // IMPORTANTE: Salva os dados do usuário no localStorage para o ProtectedRoute usar
-      localStorage.setItem('user', JSON.stringify(user));
-
-      // Redireciona o usuário com base na sua role
-      if (user.role === 'admin') {
+      // 4. Redirecione o usuário com base no 'role' retornado pela função de login
+      if (loggedInUser.role === 'admin') {
         navigate('/admin/dashboard');
-      } else if (user.role === 'librarian') {
+      } else if (loggedInUser.role === 'librarian') {
         navigate('/bibliotecario/dashboard');
       } else {
         navigate('/');
       }
+
     } catch (err) {
-      setError('Email ou senha inválidos. Por favor, tente novamente.');
+      setError(err.message || 'Email ou senha inválidos. Por favor, tente novamente.');
       console.error(err);
     } finally {
       setIsLoading(false);

@@ -3,45 +3,61 @@
 import React from 'react';
 import { Navbar as BootstrapNavbar, Container, Nav, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-// import { logout } from '../api/authService'; // Podemos comentar isso por enquanto
+import { useAuth } from '../contexts/AuthContext'; //  1. IMPORTE O HOOK useAuth
 
 function Navbar() {
   const navigate = useNavigate();
-  
-  // AQUI ESTÁ A MUDANÇA:
-  // Comente a verificação real e force o valor para 'true'
-  // const isLoggedIn = !!localStorage.getItem('authToken'); 
-  
-  const isLoggedIn = true; // << FORÇADO PARA TESTES
+  const { user, logout } = useAuth(); //  2. USE O CONTEXTO PARA OBTER O USUÁRIO E A FUNÇÃO LOGOUT
+
+  // 3. A LÓGICA DE LOGIN AGORA É BASEADA NO ESTADO DO CONTEXTO
+  const isLoggedIn = !!user; 
 
   const handleLogout = () => {
-    // A função de logout pode ser desativada ou mantida, mas não terá muito efeito agora
-    // logout(); 
-    localStorage.clear(); // Limpa tudo para simular um logout
+    logout(); //  4. CHAME A FUNÇÃO LOGOUT DO CONTEXTO
     navigate('/login');
   };
 
- return (
+  return (
     <BootstrapNavbar bg="light" expand="lg" className="mb-3">
       <Container>
         <BootstrapNavbar.Brand as={Link} to="/">Minha Biblioteca</BootstrapNavbar.Brand>
         <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BootstrapNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
+            {/* O link de Início sempre aparece */}
             <Nav.Link as={Link} to="/">Início</Nav.Link>
             
+            {/* Links que só aparecem se o usuário estiver logado */}
             {isLoggedIn && (
               <>
-                <Nav.Link as={Link} to="/gerenciar-livros">Gerenciar Livros</Nav.Link>
-                {/* ADICIONE O NOVO LINK ABAIXO */}
-                <Nav.Link as={Link} to="/gerenciar-emprestimos">Gerenciar Empréstimos</Nav.Link>
-                <Nav.Link as={Link} to="/admin/gerenciar-usuarios">Gerenciar Usuários</Nav.Link>
-                <Nav.Link as={Link} to="/admin/dashboard">Admin</Nav.Link>
-                <Nav.Link as={Link} to="/bibliotecario/dashboard">Bibliotecário</Nav.Link>
+                {/* Você pode adicionar lógicas de role aqui também */}
+                {(user.role === 'admin' || user.role === 'librarian') && (
+                  <Nav.Link as={Link} to="/gerenciar-livros">Gerenciar Livros</Nav.Link>
+                )}
+                
+                {(user.role === 'admin' || user.role === 'librarian') && (
+                  <Nav.Link as={Link} to="/gerenciar-emprestimos">Gerenciar Empréstimos</Nav.Link>
+                )}
+                
+                {user.role === 'admin' && (
+                  <Nav.Link as={Link} to="/admin/gerenciar-usuarios">Gerenciar Usuários</Nav.Link>
+                )}
               </>
             )}
           </Nav>
-          {/* ... restante do componente ... */}
+          
+          <Nav>
+            {isLoggedIn ? (
+              <Button variant="outline-secondary" onClick={handleLogout}>
+                Sair
+              </Button>
+            ) : (
+              <Button as={Link} to="/login" variant="primary">
+                Login
+              </Button>
+            )}
+          </Nav>
+
         </BootstrapNavbar.Collapse>
       </Container>
     </BootstrapNavbar>
