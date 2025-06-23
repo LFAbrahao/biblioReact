@@ -17,21 +17,24 @@ export const login = async (credentials) => {
     throw new Error(errorData.message || 'Falha no login');
   }
 
-  // Se a resposta for OK, retorna os dados do usuário
+  // Se a resposta for OK, retorna os dados do usuário e token
   const data = await response.json();
-  // A API agora retorna o usuário sem a senha, então podemos retornar o objeto diretamente.
-  return { user: data }; 
+  
+  // Armazena o token no localStorage para uso em requisições futuras
+  if (data.access_token) {
+    localStorage.setItem('authToken', data.access_token);
+  }
+  
+  // Retorna o usuário e token
+  return { 
+    user: data.user,
+    token: data.access_token 
+  }; 
 };
 
-
-// ===== CÓDIGO ADICIONADO =====
-// Adicionamos e exportamos a função de logout.
 export const logout = async () => {
-  // Por enquanto, esta função não precisa fazer nada. A lógica principal
-  // de remover o usuário do localStorage já está no AuthContext.
-  // No futuro, ela poderia ser usada para chamar uma rota no backend
-  // para invalidar um token, por exemplo.
+  // Remove o token do localStorage
+  localStorage.removeItem('authToken');
   console.log("Função de logout da API foi chamada.");
-  return Promise.resolve(); // Retorna uma promessa que resolve imediatamente.
+  return Promise.resolve();
 };
-// =============================

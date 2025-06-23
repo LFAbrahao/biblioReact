@@ -3,17 +3,16 @@
 import React from 'react';
 import { Navbar as BootstrapNavbar, Container, Nav, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; //  1. IMPORTE O HOOK useAuth
+import { useAuth } from '../contexts/AuthContext';
 
 function Navbar() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth(); //  2. USE O CONTEXTO PARA OBTER O USUÁRIO E A FUNÇÃO LOGOUT
+  const { user, logout } = useAuth();
 
-  // 3. A LÓGICA DE LOGIN AGORA É BASEADA NO ESTADO DO CONTEXTO
   const isLoggedIn = !!user; 
 
   const handleLogout = () => {
-    logout(); //  4. CHAME A FUNÇÃO LOGOUT DO CONTEXTO
+    logout();
     navigate('/login');
   };
 
@@ -30,17 +29,27 @@ function Navbar() {
             {/* Links que só aparecem se o usuário estiver logado */}
             {isLoggedIn && (
               <>
-                {/* Você pode adicionar lógicas de role aqui também */}
-                {(user.role === 'admin' || user.role === 'librarian') && (
+                {/* Links para admin e bibliotecária */}
+                {(user.role === 'admin' || user.role === 'bibliotecaria') && (
                   <Nav.Link as={Link} to="/gerenciar-livros">Gerenciar Livros</Nav.Link>
                 )}
                 
-                {(user.role === 'admin' || user.role === 'librarian') && (
+                {(user.role === 'admin' || user.role === 'bibliotecaria') && (
                   <Nav.Link as={Link} to="/gerenciar-emprestimos">Gerenciar Empréstimos</Nav.Link>
                 )}
                 
+                {/* Link exclusivo para admin */}
                 {user.role === 'admin' && (
                   <Nav.Link as={Link} to="/admin/gerenciar-usuarios">Gerenciar Usuários</Nav.Link>
+                )}
+
+                {/* Dashboard específico por role */}
+                {user.role === 'admin' && (
+                  <Nav.Link as={Link} to="/admin/dashboard">Dashboard Admin</Nav.Link>
+                )}
+                
+                {user.role === 'bibliotecaria' && (
+                  <Nav.Link as={Link} to="/bibliotecario/dashboard">Dashboard Bibliotecária</Nav.Link>
                 )}
               </>
             )}
@@ -48,9 +57,14 @@ function Navbar() {
           
           <Nav>
             {isLoggedIn ? (
-              <Button variant="outline-secondary" onClick={handleLogout}>
-                Sair
-              </Button>
+              <>
+                <span className="navbar-text me-3">
+                  Olá, {user.name} ({user.role})
+                </span>
+                <Button variant="outline-secondary" onClick={handleLogout}>
+                  Sair
+                </Button>
+              </>
             ) : (
               <Button as={Link} to="/login" variant="primary">
                 Login

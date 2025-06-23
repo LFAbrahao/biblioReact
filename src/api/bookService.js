@@ -1,6 +1,6 @@
 // src/api/bookService.js
 
-import api from './api';
+import { api } from './apiClient';
 
 /**
  * Busca todos os livros. Pode incluir parâmetros para busca e filtragem.
@@ -8,8 +8,10 @@ import api from './api';
  * @returns {Promise<Array>} Uma promise que resolve com um array de livros.
  */
 export const getAllBooks = async (params = {}) => {
-  const response = await api.get('/books', { params });
-  return response.data;
+  // Para parâmetros de query, você pode construir a URL manualmente ou usar URLSearchParams
+  const queryString = new URLSearchParams(params).toString();
+  const url = queryString ? `/books?${queryString}` : '/books';
+  return api.get(url);
 };
 
 /**
@@ -18,20 +20,16 @@ export const getAllBooks = async (params = {}) => {
  * @returns {Promise<object>} Uma promise que resolve com os dados do livro.
  */
 export const getBookById = async (bookId) => {
-  const response = await api.get(`/books/${bookId}`);
-  return response.data;
+  return api.get(`/books/${bookId}`);
 };
 
 /**
  * Cria um novo livro no catálogo.
- * @param {FormData} bookData - Os dados do livro, possivelmente como FormData para incluir upload de imagem.
+ * @param {object} bookData - Os dados do livro.
  * @returns {Promise<object>} Uma promise que resolve com os dados do livro criado.
  */
 export const createBook = async (bookData) => {
-  // Usar 'Content-Type': 'multipart/form-data' é importante para uploads de arquivos.
-  // O Axios geralmente faz isso automaticamente se você passar um objeto FormData.
-  const response = await api.post('/books', bookData);
-  return response.data;
+  return api.post('/books', bookData);
 };
 
 /**
@@ -41,8 +39,7 @@ export const createBook = async (bookData) => {
  * @returns {Promise<object>} Uma promise que resolve com os dados do livro atualizado.
  */
 export const updateBook = async (bookId, updatedData) => {
-  const response = await api.patch(`/books/${bookId}`, updatedData);
-  return response.data;
+  return api.patch(`/books/${bookId}`, updatedData);
 };
 
 /**
@@ -51,6 +48,5 @@ export const updateBook = async (bookId, updatedData) => {
  * @returns {Promise<object>} Uma promise que resolve com uma mensagem de sucesso.
  */
 export const deleteBook = async (bookId) => {
-  const response = await api.delete(`/books/${bookId}`);
-  return response.data;
+  return api.delete(`/books/${bookId}`);
 };

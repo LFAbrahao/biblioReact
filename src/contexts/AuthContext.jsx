@@ -1,7 +1,7 @@
 // src/contexts/AuthContext.jsx
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { login as apiLogin, logout as apiLogout } from '../api/authService'; // Supondo que você tenha uma função de logout na API
+import { login as apiLogin, logout as apiLogout } from '../api/authService';
 
 const AuthContext = createContext(null);
 
@@ -19,8 +19,9 @@ export function AuthProvider({ children }) {
 
   const login = async (credentials) => {
     try {
-      const { user: loggedInUser } = await apiLogin(credentials);
+      const { user: loggedInUser, token } = await apiLogin(credentials);
       localStorage.setItem('user', JSON.stringify(loggedInUser));
+      // O token já é armazenado no authService
       setUser(loggedInUser);
       return loggedInUser;
     } catch (error) {
@@ -30,13 +31,29 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    // Se você tiver uma chamada de API para invalidar o token no backend, chame-a aqui
-    // apiLogout(); 
+    // Chama a função de logout da API que remove o token
+    apiLogout();
     localStorage.removeItem('user');
     setUser(null);
   };
 
-  const value = { user, login, logout };
+  // Função para verificar se o usuário está autenticado
+  const isAuthenticated = () => {
+    return !!user && !!localStorage.getItem('authToken');
+  };
+
+  // Função para obter o token
+  const getToken = () => {
+    return localStorage.getItem('authToken');
+  };
+
+  const value = { 
+    user, 
+    login, 
+    logout, 
+    isAuthenticated,
+    getToken
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

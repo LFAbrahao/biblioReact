@@ -34,10 +34,8 @@ function App() {
           <Route path="/livro/:id" element={<BookDetails />} />
 
           {/* =================================================================== */}
-          {/* ALTERAÇÃO PRINCIPAL: A ROTA INICIAL AGORA É PROTEGIDA               */}
+          {/* ROTA INICIAL PROTEGIDA - Qualquer usuário logado pode acessar       */}
           {/* =================================================================== */}
-          {/* Qualquer usuário logado (admin, librarian, ou user) poderá ver.   */}
-          {/* Se não estiver logado, será redirecionado para /login.            */}
           <Route 
             path="/" 
             element={
@@ -46,8 +44,6 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          {/* =================================================================== */}
-
 
           {/* ======================= */}
           {/* ROTAS PROTEGIDAS - ADMIN */}
@@ -70,24 +66,24 @@ function App() {
           />
 
           {/* =========================== */}
-          {/* ROTAS PROTEGIDAS - BIBLIOTECÁRIO */}
+          {/* ROTAS PROTEGIDAS - BIBLIOTECÁRIA */}
           {/* =========================== */}
           <Route 
             path="/bibliotecario/dashboard" 
             element={
-              <ProtectedRoute roles={['librarian']}>
+              <ProtectedRoute roles={['bibliotecaria']}>
                 <LibrarianDashboard />
               </ProtectedRoute>
             } 
           />
 
           {/* ================================================= */}
-          {/* ROTA COMPARTILHADA (Admin E Bibliotecário)      */}
+          {/* ROTAS COMPARTILHADAS (Admin E Bibliotecária)    */}
           {/* ================================================= */}
           <Route 
             path="/gerenciar-livros" 
             element={
-              <ProtectedRoute roles={['admin', 'librarian']}>
+              <ProtectedRoute roles={['admin', 'bibliotecaria']}>
                 <ManageBooks />
               </ProtectedRoute>
             } 
@@ -95,7 +91,7 @@ function App() {
           <Route 
             path="/gerenciar-emprestimos" 
             element={
-              <ProtectedRoute roles={['admin', 'librarian']}>
+              <ProtectedRoute roles={['admin', 'bibliotecaria']}>
                 <ManageLoans />
               </ProtectedRoute>
             } 
