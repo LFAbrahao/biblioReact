@@ -19,9 +19,8 @@ function ProtectedRoute({ children, roles }) {
     
     // Mapeia roles do frontend para backend para compatibilidade
     const roleMapping = {
-      'librarian': 'bibliotecaria',
-      'bibliotecaria': 'bibliotecaria',
       'admin': 'admin',
+      'bibliotecaria': 'bibliotecaria',
       'user': 'user'
     };
 

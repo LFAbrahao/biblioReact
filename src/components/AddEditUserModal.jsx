@@ -91,7 +91,7 @@ function AddEditUserModal({ show, handleClose, handleSave, initialData }) {
               onChange={handleChange}
             >
               <option value="user">Usuário</option>
-              <option value="librarian">Bibliotecário</option>
+              <option value="bibliotecaria">Bibliotecário</option>
               <option value="admin">Administrador</option>
             </Form.Select>
           </Form.Group>

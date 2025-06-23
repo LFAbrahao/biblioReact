@@ -114,7 +114,7 @@ function ManageUsers() {
               <tr key={user.id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td><span className={`badge bg-${user.role === 'admin' ? 'danger' : user.role === 'librarian' ? 'warning' : 'secondary'}`}>{user.role}</span></td>
+                <td><span className={`badge bg-${user.role === 'admin' ? 'danger' : user.role === 'bibliotecaria' ? 'warning' : 'secondary'}`}>{user.role}</span></td>
                 <td>
                   <Button 
                     variant="info" 

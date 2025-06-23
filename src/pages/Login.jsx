@@ -30,7 +30,7 @@ function Login() {
       // 4. Redirecione o usuário com base no 'role' retornado pela função de login
       if (loggedInUser.role === 'admin') {
         navigate('/admin/dashboard');
-      } else if (loggedInUser.role === 'librarian') {
+      } else if (loggedInUser.role === 'bibliotecaria') {
         navigate('/bibliotecario/dashboard');
       } else {
         navigate('/');
