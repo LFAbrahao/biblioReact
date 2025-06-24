@@ -1,5 +1,3 @@
-// src/pages/Home.jsx
-
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 import * as bookService from '../api/bookService';
@@ -8,7 +6,10 @@ import Spinner from '../components/Spinner';
 
 function Home() {
   const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]); // Estado para armazenar os livros filtrados
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState(''); // Novo estado para o gênero
+  const [genres, setGenres] = useState([]); // Para armazenar os gêneros disponíveis
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,9 +17,10 @@ function Home() {
     const fetchBooks = async () => {
       try {
         setIsLoading(true);
-        // Passa o termo de busca para a função da API
-        const data = await bookService.getAllBooks({ search: searchTerm });
-        setBooks(data);
+        const data = await bookService.getAllBooks();
+        setBooks(data); // Armazena todos os livros
+        setFilteredBooks(data); // Inicializa a lista filtrada com todos os livros
+        setGenres([...new Set(data.map(book => book.genre))]); // Cria a lista de gêneros únicos
         setError(null);
       } catch (err) {
         setError('Falha ao buscar os livros. Tente novamente mais tarde.');
@@ -28,14 +30,24 @@ function Home() {
       }
     };
 
-    // Usamos um timeout para esperar o usuário parar de digitar antes de buscar (debounce)
-    const debounceTimer = setTimeout(() => {
-      fetchBooks();
-    }, 500); // Espera 500ms
+    fetchBooks();
+  }, []);
 
-    // Limpa o timeout se o usuário digitar novamente
-    return () => clearTimeout(debounceTimer);
-  }, [searchTerm]); // Re-executa o efeito quando o termo de busca muda
+  // Filtra os livros com base no termo de busca e no gênero selecionado
+  useEffect(() => {
+    const filtered = books.filter((book) => {
+      // Filtra por título ou autor
+      const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            book.author.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      // Filtra por gênero, se um gênero for selecionado
+      const matchesGenre = selectedGenre ? book.genre === selectedGenre : true;
+
+      return matchesSearch && matchesGenre;
+    });
+
+    setFilteredBooks(filtered); // Atualiza a lista filtrada
+  }, [searchTerm, selectedGenre, books]); // Re-executa sempre que o searchTerm, selectedGenre ou books mudar
 
   if (isLoading) {
     return <Spinner />;
@@ -46,6 +58,8 @@ function Home() {
       <Row className="mb-4">
         <Col>
           <h1>Catálogo de Livros</h1>
+
+          {/* Campo de busca por título ou autor */}
           <Form.Control
             type="text"
             placeholder="Buscar por título ou autor..."
@@ -55,14 +69,30 @@ function Home() {
         </Col>
       </Row>
 
+      <Row className="mb-4">
+        <Col>
+          {/* Seletor de gênero */}
+          <Form.Control
+            as="select"
+            value={selectedGenre}
+            onChange={(e) => setSelectedGenre(e.target.value)}
+          >
+            <option value="">Todos os gêneros</option>
+            {genres.map((genre) => (
+              <option key={genre} value={genre}>{genre}</option>
+            ))}
+          </Form.Control>
+        </Col>
+      </Row>
+
       {error && <Alert variant="danger">{error}</Alert>}
       
-      {!error && books.length === 0 && (
-        <Alert variant="info">Nenhum livro encontrado com o termo "{searchTerm}".</Alert>
+      {!error && filteredBooks.length === 0 && (
+        <Alert variant="info">Nenhum livro encontrado com o termo "{searchTerm}" e gênero "{selectedGenre}".</Alert>
       )}
 
       <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-        {books.map((book) => (
+        {filteredBooks.map((book) => (
           <Col key={book.id}>
             <BookCard book={book} />
           </Col>
