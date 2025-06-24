@@ -50,3 +50,12 @@ export const updateBook = async (bookId, updatedData) => {
 export const deleteBook = async (bookId) => {
   return api.delete(`/books/${bookId}`);
 };
+
+/**
+ * Busca estatísticas dos livros (estoque, reservados, retirados).
+ * @returns {Promise<object>} Uma promise que resolve com as estatísticas.
+ */
+export const getStatistics = async () => {
+  const response = await api.get('/books/statistics');
+  return response.data;
+};

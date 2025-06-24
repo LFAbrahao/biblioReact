@@ -7,22 +7,25 @@ import * as bookService from '../api/bookService';
 import Spinner from '../components/Spinner';
 
 function LibrarianDashboard() {
-  // Nota: Os dados de "reservados" e "retirados" devem vir da sua API.
-  // Aqui, usamos valores fixos como exemplo.
   const [stats, setStats] = useState({
     inStock: 0,
-    reserved: 23, // Exemplo
-    checkedOut: 58, // Exemplo
+    reserved: 0,
+    checkedOut: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const booksData = await bookService.getAllBooks();
-        setStats(prevStats => ({ ...prevStats, inStock: booksData.length }));
+        // Novo método para buscar estatísticas
+        const data = await bookService.getStatistics();
+        setStats({
+          inStock: data.totalStock,
+          reserved: data.totalReserved,
+          checkedOut: data.totalReturned,
+        });
       } catch (error) {
-        console.error("Erro ao buscar livros:", error);
+        console.error("Erro ao buscar estatísticas:", error);
       } finally {
         setIsLoading(false);
       }
