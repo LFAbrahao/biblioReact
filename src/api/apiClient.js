@@ -91,7 +91,13 @@ export const api = {
     
     return response.json();
   },
+
+  // Obter estatísticas dos livros
+  getStatistics: async () => {
+    const data = await api.get('/books/statistics');
+    console.log('Estatísticas recebidas da API:', data);
+    return data;
+  },
 };
 
 export default api;
-

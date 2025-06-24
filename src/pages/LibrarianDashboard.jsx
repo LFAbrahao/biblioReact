@@ -17,12 +17,12 @@ function LibrarianDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Novo método para buscar estatísticas
         const data = await bookService.getStatistics();
+        console.log('Estatísticas recebidas:', data);
         setStats({
-          inStock: data.totalStock,
-          reserved: data.totalReserved,
-          checkedOut: data.totalReturned,
+          inStock: data?.totalStock ?? 0,
+          reserved: data?.totalReserved ?? 0,
+          checkedOut: data?.totalReturned ?? 0,
         });
       } catch (error) {
         console.error("Erro ao buscar estatísticas:", error);

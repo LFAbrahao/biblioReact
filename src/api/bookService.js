@@ -56,6 +56,5 @@ export const deleteBook = async (bookId) => {
  * @returns {Promise<object>} Uma promise que resolve com as estatísticas.
  */
 export const getStatistics = async () => {
-  const response = await api.get('/books/statistics');
-  return response.data;
+  return await api.getStatistics();
 };
