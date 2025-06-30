@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Spinner, Alert } from 'react-bootstrap';
 import * as userService from '../api/userService';
-import AddEditUserModal from '../components/AddEditUserModal'; // Importe o novo modal
+import AddEditUserModal from '../components/AddEditUserModal'; 
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -75,10 +75,10 @@ function ManageUsers() {
       handleCloseModal();
       fetchUsers();
     } catch (err) {
-      // ESTA É A PARTE QUE VAMOS MELHORAR
+      
       console.error("Falha ao salvar o usuário:", err.response); // Log para depuração
 
-      // Verifica se o erro é o de email duplicado (409 Conflict)
+      
       if (err.response && err.response.status === 409) {
         alert(`Erro: ${err.response.data.message}`); // Exibe a mensagem do backend: "Este email já está em uso."
       } else {
@@ -95,7 +95,7 @@ function ManageUsers() {
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h1>Gerenciar Usuários</h1>
-        {/* O botão "Adicionar" agora abre o modal */}
+        
         <Button variant="primary" onClick={handleShowAddModal}>Adicionar Novo Usuário</Button>
       </div>
       <Table striped bordered hover responsive>
@@ -109,7 +109,7 @@ function ManageUsers() {
         </thead>
         <tbody>
           {users.map(user => (
-            // Apenas admins podem editar outros admins
+            
             (loggedInUserRole === 'admin' || user.role !== 'admin') && (
               <tr key={user.id}>
                 <td>{user.name}</td>
@@ -139,7 +139,7 @@ function ManageUsers() {
         </tbody>
       </Table>
 
-      {/* Renderiza o modal de usuário, passando os estados e funções como props */}
+      
       <AddEditUserModal
         show={showModal}
         handleClose={handleCloseModal}

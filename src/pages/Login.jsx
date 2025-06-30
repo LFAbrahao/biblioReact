@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
-import { useAuth } from '../contexts/AuthContext'; // 1. IMPORTE O HOOK useAuth
+import { useAuth } from '../contexts/AuthContext'; 
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   
   const navigate = useNavigate();
-  const { login } = useAuth(); // 2. PEGUE A FUNÇÃO 'login' DO NOSSO CONTEXTO
+  const { login } = useAuth(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,14 +20,13 @@ function Login() {
     setError(null);
 
     try {
-      // 3. CHAME A FUNÇÃO 'login' DO CONTEXTO
-      // Ela vai cuidar de chamar a API, salvar no localStorage e ATUALIZAR O ESTADO GLOBAL
+      
       const loggedInUser = await login({ 
         email: email.trim(), 
         password: password.trim() 
       });
       
-      // 4. Redirecione o usuário com base no 'role' retornado pela função de login
+      
       if (loggedInUser.role === 'admin') {
         navigate('/admin/dashboard');
       } else if (loggedInUser.role === 'bibliotecaria') {

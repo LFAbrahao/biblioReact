@@ -89,7 +89,6 @@ function ManageBooks() {
             <th>Capa</th>
             <th>Título</th>
             <th>Autor</th>
-            {/* 1. CABEÇALHO DA NOVA COLUNA */}
             <th>Estoque</th>
             <th>Ações</th>
           </tr>
@@ -111,7 +110,7 @@ function ManageBooks() {
               </td>
 
               <td>{book.author}</td>
-              {/* 2. CÉLULA COM O DADO DO ESTOQUE */}
+              
               <td>{book.stock}</td>
               <td>
                 <Button 

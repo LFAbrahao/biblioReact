@@ -23,10 +23,10 @@ function Navbar() {
         <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BootstrapNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {/* O link de Início sempre aparece */}
+           
             <Nav.Link as={Link} to="/">Início</Nav.Link>
             
-            {/* Links que só aparecem se o usuário estiver logado */}
+            
             {isLoggedIn && (
               <>
                 {/* Links para admin e bibliotecária */}

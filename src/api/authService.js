@@ -1,6 +1,6 @@
-// src/api/authService.js
 
-const API_URL = 'http://localhost:3000'; // URL do seu back-end
+
+const API_URL = 'http://localhost:3000'; 
 
 export const login = async (credentials) => {
   const response = await fetch(`${API_URL}/auth/login`, {

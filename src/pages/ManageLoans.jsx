@@ -45,7 +45,7 @@ function ManageLoans() {
   const handleReturn = async (reservationId) => {
     if (window.confirm('Confirmar a devolução deste livro?')) {
       try {
-        // ATUALIZADO: Chama a função que muda o status para 'returned'
+        
         await reservationService.updateReservationStatus(reservationId, 'returned'); 
         fetchData(); 
       } catch (err) {
@@ -94,20 +94,20 @@ function ManageLoans() {
               <td>{res.book?.title || 'Livro não encontrado'}</td>
               <td>{res.user?.name || 'Usuário não encontrado'}</td>
               <td>
-                {/* ATUALIZADO: Usa o campo 'reservationDate' */}
+                
                 {res.reservationDate 
                   ? new Date(res.reservationDate).toLocaleDateString()
                   : 'N/D'
                 }
               </td>
               <td>
-                {/* ATUALIZADO: Lógica baseada no campo 'status' */}
+                
                 <Badge bg={res.status === 'pending' ? 'warning' : res.status === 'returned' ? 'success' : 'secondary'}>
                   {res.status}
                 </Badge>
               </td>
               <td>
-                {/* ATUALIZADO: Ação só aparece se o status for 'pending' */}
+                
                 {res.status === 'pending' && (
                   <Button
                     variant="success"
@@ -123,7 +123,7 @@ function ManageLoans() {
         </tbody>
       </Table>
 
-      {/* RECOMENDAÇÃO: Renomeie este componente para AddReservationModal */}
+      
       <AddLoanModal
         show={showModal}
         handleClose={() => setShowModal(false)}

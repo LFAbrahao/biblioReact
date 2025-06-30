@@ -52,12 +52,8 @@ function BookDetails() {
           <h5>Descrição</h5>
           <p>{book.description || 'Nenhuma descrição fornecida.'}</p>
           
-          {/* 1. LINHA DE PÁGINAS REMOVIDA */}
-
-          {/* 2. CORREÇÃO: Alterado 'Categoria' para 'Gênero' e 'book.category' para 'book.genre' */}
           <p><strong>Gênero:</strong> {book.genre || 'Não especificado'}</p>
 
-          {/* 3. BÔNUS: Adicionando a exibição do estoque, que já temos nos dados */}
           <p><strong>Unidades em Estoque:</strong> {book.stock}</p>
 
           <hr />

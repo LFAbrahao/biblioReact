@@ -1,4 +1,4 @@
-// src/api/api.js
+
 
 const API_URL = 'http://localhost:3000';
 
@@ -41,9 +41,9 @@ const makeAuthenticatedRequest = async (url, options = {}) => {
   return response;
 };
 
-// Funções de API específicas
+
 export const api = {
-  // GET request
+  
   get: async (url) => {
     const response = await makeAuthenticatedRequest(url, {
       method: 'GET',
@@ -51,7 +51,7 @@ export const api = {
     return response.json();
   },
 
-  // POST request
+
   post: async (url, data) => {
     const response = await makeAuthenticatedRequest(url, {
       method: 'POST',
@@ -60,7 +60,7 @@ export const api = {
     return response.json();
   },
 
-  // PUT request
+ 
   put: async (url, data) => {
     const response = await makeAuthenticatedRequest(url, {
       method: 'PUT',
@@ -69,7 +69,7 @@ export const api = {
     return response.json();
   },
 
-  // PATCH request
+  
   patch: async (url, data) => {
     const response = await makeAuthenticatedRequest(url, {
       method: 'PATCH',
@@ -78,13 +78,13 @@ export const api = {
     return response.json();
   },
 
-  // DELETE request
+ 
   delete: async (url) => {
     const response = await makeAuthenticatedRequest(url, {
       method: 'DELETE',
     });
     
-    // DELETE pode retornar 204 (No Content)
+    
     if (response.status === 204) {
       return null;
     }

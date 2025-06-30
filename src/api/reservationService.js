@@ -1,10 +1,10 @@
-// src/api/reservationService.js
+
 
 import api from './api';
 
 /**
  * Busca todas as reservas.
- * A API NestJS já retorna as relações, então não precisamos do '_expand'.
+ * 
  * @returns {Promise<Array>} Uma promise que resolve com a lista de reservas.
  */
 export const getReservations = async () => {

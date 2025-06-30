@@ -7,7 +7,7 @@ function BookCard({ book }) {
     <Card className="h-100">
       <Link to={`/livro/${book.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         
-        {/* AQUI ESTÁ A CORREÇÃO: trocamos 'coverImage' por 'imageUrl' */}
+        
         {book.imageUrl ? (
           <Card.Img variant="top" src={book.imageUrl} alt={book.title} style={{ height: '200px', objectFit: 'cover' }} />
         ) : (

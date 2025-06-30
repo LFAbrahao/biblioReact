@@ -21,10 +21,9 @@ import NotFound from './pages/NotFound';
 function App() {
   return (
     <>
-      {/* A Navbar fica fora do <Routes> para aparecer em todas as páginas */}
+     
       <Navbar />
 
-      {/* O Container do React Bootstrap ajuda a centralizar e alinhar o conteúdo */}
       <Container className="mt-4 mb-4">
         <Routes>
           {/* ======================= */}
